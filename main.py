@@ -1,0 +1,38 @@
+import pygame
+import config
+import components
+
+pygame.init()
+clock = pygame.time.Clock()
+
+def quit_game():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+def generate_pipes():
+    config.pipes.append(components.Pipes(config.SCREEN_WIDTH))
+def main():
+
+    pipes_spawn_time = 10
+
+    while True:
+
+        quit_game()
+        config.screen.fill((0, 0, 0))
+        config.ground.draw(config.screen)
+        if pipes_spawn_time <= 0:
+            generate_pipes()
+            pipes_spawn_time = 200
+        pipes_spawn_time -= 1
+
+        for pipe in config.pipes:
+            pipe.draw(config.screen)
+            pipe.update()
+            if pipe.off_screen:
+                config.pipes.remove(pipe)
+
+
+        clock.tick(60)
+        pygame.display.flip()
+main()
