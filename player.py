@@ -37,8 +37,8 @@ class Player:
         if not (self.ground_collide(ground) or self.pipe_collide()):
             self.velocity += 0.25
             self.rect.y += self.velocity
-            if self.velocity > 10:
-                self.velocity = 10
+            if self.velocity > 5:
+                self.velocity = 5
         else:
             self.alive = False
             self.velocity = 0
@@ -47,20 +47,21 @@ class Player:
         if not self.flap and not self.sky_collide():
             self.flap = True
             self.velocity -= 5
-        if self.velocity >= 3:
+        if self.velocity >= 0:
             self.flap = False
     def look(self):
         if config.pipes:
-            #line to top pipe
+            # Line to top pipe
             self.vision[0] = max(0, self.rect.center[1] - self.closest_pipe().top_rect.bottom) / 500
-            pygame.draw.line(config.screen, self.color, self.rect.center, (self.rect.center[0], config.pipes[0].top_rect.bottom))
+            pygame.draw.line(config.screen, self.color, self.rect.center,
+                             (self.rect.center[0], config.pipes[0].top_rect.bottom))
 
-            #line to mid
+            # Line to mid pipe
             self.vision[1] = max(0, self.closest_pipe().x - self.rect.center[0]) / 500
             pygame.draw.line(config.screen, self.color, self.rect.center,
                              (config.pipes[0].x, self.rect.center[1]))
 
-            #line to bottom pipe
+            # Line to bottom pipe
             self.vision[2] = max(0, self.closest_pipe().bottom_rect.top - self.rect.center[1]) / 500
             pygame.draw.line(config.screen, self.color, self.rect.center,
                              (self.rect.center[0], config.pipes[0].bottom_rect.top))
