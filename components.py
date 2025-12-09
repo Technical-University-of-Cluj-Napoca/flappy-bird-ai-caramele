@@ -1,8 +1,9 @@
 import pygame
 import random
 
+
 class Ground:
-    ground_level = 500
+    ground_level = 539
 
     def __init__(self, win_width):
         self.x, self.y = 0, Ground.ground_level

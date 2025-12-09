@@ -7,6 +7,15 @@ pygame.init()
 clock = pygame.time.Clock()
 population = population.Population(100)
 
+def scroll_ground(screen, img, y, speed, pos):
+    pos -= speed
+    if pos <= -img.get_width():
+        pos = 0
+    screen.blit(img, (pos, y))
+    screen.blit(img, (pos + img.get_width(), y))
+    return pos
+
+
 def quit_game():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -17,12 +26,20 @@ def generate_pipes():
 def main():
 
     pipes_spawn_time = 10
-
+    ground_x = 0
     while True:
 
         quit_game()
-        config.screen.fill((0, 0, 0))
-        config.ground.draw(config.screen)
+        config.screen.blit(config.BACKROUND_IMG, (0,0))
+
+        ground_x = scroll_ground(config.screen,
+                                 config.GROUND_IMG,
+                                 config.GROUND_Y,
+                                 config.GROUND_SPEED,
+                                 ground_x
+                                 )
+
+        #config.screen.blit(config.GROUND_IMG, (0, config.GROUND_Y))
         if pipes_spawn_time <= 0:
             generate_pipes()
             pipes_spawn_time = 200
