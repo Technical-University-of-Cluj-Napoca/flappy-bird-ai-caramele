@@ -113,7 +113,45 @@ def main():
     ground_x = 0
     mode = title_screen()
     tutorial_screen(mode)
+    config.pipes.clear()
+    manual_bird = player.ManualBird(100,100)
     while True:
+
+        if mode == "manual":
+            
+            config.screen.blit(config.BACKROUND_IMG, (0,0))
+
+            ground_x = scroll_ground(config.screen,
+                                    config.GROUND_IMG,
+                                    config.GROUND_Y,
+                                    config.GROUND_SPEED,
+                                    ground_x
+                                    )
+
+            if pipes_spawn_time <= 0:
+                generate_pipes()
+                pipes_spawn_time = 200
+            pipes_spawn_time -= 1
+
+            for pipe in config.pipes:
+                pipe.draw(config.screen)
+                pipe.update()
+                if pipe.off_screen:
+                    config.pipes.remove(pipe)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    manual_bird.jump()
+            manual_bird.update()
+            manual_bird.draw(config.screen)
+
+            if  manual_bird.hit_pipe() or manual_bird.hit_ground():
+                print("Game Over")
+                return
+            
 
         if mode == "auto":
             quit_game()

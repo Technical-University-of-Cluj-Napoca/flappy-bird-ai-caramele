@@ -102,3 +102,42 @@ class Bird:
         self.float_offset += self.float_dir * self.float_speed
         if self.float_offset > self.float_range or self.float_offset < -self.float_range:
             self.float_dir *= -1
+
+
+class ManualBird(Bird):
+    def __init__(self, x, y, width=50, height = 50):
+        super().__init__(x, y, width, height)
+
+        self.vel = 0
+        self.gravity = 0.2
+        self.jump_strength = -7
+
+        self.rect = pygame.Rect(self.x, self.y, width, height)
+    
+    def update(self):
+        self.float_offset = 0
+
+        #bird pulled down by gravity
+        self.vel += self.gravity
+
+        self.y += self.vel#move forward
+        self.rect.y = self.y #update collision box
+
+    def jump(self):
+        self.vel = self.jump_strength
+        self.y += self.vel
+    
+    def draw(self, screen):
+        screen.blit(self.img, (self.x, self.y))
+
+    #function to check for ground collision
+    def hit_ground(self):
+        return self.rect.bottom >= config.GROUND_Y - 1
+    
+    
+    def hit_pipe(self):
+        for pipe in config.pipes:
+            if self.rect.colliderect(pipe.top_rect) or \
+                self.rect.colliderect(pipe.bottom_rect):
+                return True
+        return False
