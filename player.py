@@ -54,17 +54,17 @@ class Player:
             # Line to top pipe
             self.vision[0] = max(0, self.rect.center[1] - self.closest_pipe().top_rect.bottom) / 500
             pygame.draw.line(config.screen, self.color, self.rect.center,
-                             (self.rect.center[0], config.pipes[0].top_rect.bottom))
+                             (self.rect.center[0], self.closest_pipe().top_rect.bottom))
 
             # Line to mid pipe
             self.vision[1] = max(0, self.closest_pipe().x - self.rect.center[0]) / 500
             pygame.draw.line(config.screen, self.color, self.rect.center,
-                             (config.pipes[0].x, self.rect.center[1]))
+                             (self.closest_pipe().x, self.rect.center[1]))
 
             # Line to bottom pipe
             self.vision[2] = max(0, self.closest_pipe().bottom_rect.top - self.rect.center[1]) / 500
             pygame.draw.line(config.screen, self.color, self.rect.center,
-                             (self.rect.center[0], config.pipes[0].bottom_rect.top))
+                             (self.rect.center[0], self.closest_pipe().bottom_rect.top))
 
 
 
