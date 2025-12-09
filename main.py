@@ -60,6 +60,46 @@ def title_screen():
         pygame.display.flip()
         clock.tick(60)
 
+def tutorial_screen(mode):
+   
+    bird = player.Bird(100, config.SCREEN_HEIGHT // 2)
+    ground_x = 0
+
+    while True:
+        #keep running until player starts game
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                return
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                return
+
+        config.screen.blit(config.BACKROUND_IMG, (0,0))
+        ground_x = scroll_ground(config.screen,
+                                        config.GROUND_IMG,
+                                        config.GROUND_Y,
+                                        config.GROUND_SPEED,
+                                        ground_x
+                                        )
+    
+        bird.flop()
+        bird.draw(config.screen)
+
+        tutorial_font = pygame.font.SysFont("Arial", 30)
+        if mode == "manual":
+            text = tutorial_font.render("Press SPACE to start playing", True, (255, 255, 255))
+        if mode == "auto":
+            text = tutorial_font.render("Press SPACE and watch Faby play", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(config.SCREEN_WIDTH // 2, 200))
+        config.screen.blit(text, text_rect)
+
+        pygame.display.flip()
+        clock.tick(60)
+
+    
+
 def quit_game():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -72,6 +112,7 @@ def main():
     pipes_spawn_time = 10
     ground_x = 0
     mode = title_screen()
+    tutorial_screen(mode)
     while True:
 
         if mode == "auto":

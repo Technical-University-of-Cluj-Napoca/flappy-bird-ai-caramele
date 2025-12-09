@@ -86,8 +86,19 @@ class Bird:
         self.img = pygame.image.load("assets/bird.png").convert_alpha()
     
         self.img = pygame.transform.scale(self.img, (width, height))
-    
+        self.float_offset = 0  
+        self.float_dir = 1    
+        self.float_speed = 0.5 
+        self.float_range = 10  
 
     def draw(self, screen):
-        
-        screen.blit(self.img, (self.x, self.y))
+        screen.blit(self.img, (self.x, self.y + self.float_offset))
+
+    
+    def flop(self):
+        '''
+        function for bird to float up and down during the tutorial
+        '''
+        self.float_offset += self.float_dir * self.float_speed
+        if self.float_offset > self.float_range or self.float_offset < -self.float_range:
+            self.float_dir *= -1
