@@ -1,5 +1,7 @@
 import pygame
 import components
+
+pygame.init()
 SCREEN_WIDTH = 550
 SCREEN_HEIGHT = 720
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -18,3 +20,5 @@ GROUND_HEIGHT = int(GROUND_IMG.get_height() * scale_factor)
 GROUND_IMG = pygame.transform.scale(GROUND_IMG, (SCREEN_WIDTH, GROUND_HEIGHT))
 GROUND_Y = SCREEN_HEIGHT - GROUND_HEIGHT
 GROUND_SPEED = 1
+
+TITLE_FONT = pygame.font.SysFont("Arial", 64, bold=True)

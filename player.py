@@ -79,3 +79,15 @@ class Player:
             if not p.passed:
                 return p
 
+class Bird:
+    def __init__(self, x, y, width=50, height = 50):
+        self.x = x
+        self.y = y
+        self.img = pygame.image.load("assets/bird.png").convert_alpha()
+    
+        self.img = pygame.transform.scale(self.img, (width, height))
+    
+
+    def draw(self, screen):
+        
+        screen.blit(self.img, (self.x, self.y))
