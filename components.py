@@ -14,7 +14,7 @@ class Ground:
 
 class Pipes:
     width = 100
-    opening = 100
+    opening = 150#bigger gap in the pipes
 
     pipe_img = pygame.image.load("assets/pipe.png")
 
@@ -37,7 +37,7 @@ class Pipes:
         screen.blit(self.top_pipe_img, self.top_rect)
 
     def update(self):
-        self.x -= 1
+        self.x -= 3
         if self.x + Pipes.width <= 30:
             self.passed = True
         if self.x <= -self.width:

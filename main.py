@@ -36,7 +36,7 @@ def title_screen():
             if auto_btn.handle_event(event):
                 return "auto"
             if score_btn.handle_event(event):
-                print("score todo")
+                return "score"
         
         config.screen.blit(config.BACKROUND_IMG, (0,0))
         config.screen.blit(config.GROUND_IMG, (0, config.GROUND_Y))
@@ -103,7 +103,49 @@ def tutorial_screen(mode):
         pygame.display.flip()
         clock.tick(60)
 
+def display_score(score):
+    font = pygame.font.SysFont("Arial", 30)
+    score_txt = font.render("Score: " + str(score), True, (255, 255, 255))
+    score_rect = score_txt.get_rect(center=(config.SCREEN_WIDTH // 2, 50))
+    config.screen.blit(score_txt, score_rect)
     
+#display the highschore window
+def highscore_window():
+    highscore = config.HIGH_SCORE
+
+    display = True#flag to check if to display window
+    font_title = pygame.font.SysFont("Arial", 50, bold = True)
+    font_score = pygame.font.SysFont("Arial", 30)
+    while display:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                display = False
+
+        overlay = pygame.Surface((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
+        overlay.set_alpha(180)
+        overlay.fill((0,0,0))
+        config.screen.blit(overlay, (0,0))
+
+        title_text = font_title.render("HIGH SCORE", True, (255, 255, 255))
+        title_rect = title_text.get_rect(center=(config.SCREEN_WIDTH // 2, 200))
+        config.screen.blit(title_text, title_rect)
+
+        score_text = font_score.render(str(highscore), True, (255, 255, 255))
+        score_rect = score_text.get_rect(center=(config.SCREEN_WIDTH // 2, 300))
+        config.screen.blit(score_text, score_rect)
+        
+        instr_text = font_score.render("Press SPACE to continue", True, (200, 200, 200))
+        instr_rect = instr_text.get_rect(center=(config.SCREEN_WIDTH // 2, 400))
+        config.screen.blit(instr_text, instr_rect)
+
+        pygame.display.flip()
+                
+
+
+
 
 def quit_game():
     for event in pygame.event.get():
@@ -112,15 +154,27 @@ def quit_game():
             exit()
 def generate_pipes():
     config.pipes.append(components.Pipes(config.SCREEN_WIDTH))
-def main():
 
+
+
+def main():
+    score = 0
     pipes_spawn_time = 10
     ground_x = 0
-    mode = title_screen()
+    while True:
+        mode = title_screen()
+        if mode == "score":
+            highscore_window()
+            continue
+        else:
+            break
+    
     tutorial_screen(mode)
     config.pipes.clear()
     manual_bird = player.ManualBird(100,100)
     while True:
+
+
 
         if mode == "manual":
             
@@ -144,6 +198,9 @@ def main():
                 if pipe.off_screen:
                     config.pipes.remove(pipe)
 
+                if not pipe.passed and manual_bird.x > pipe.x + pipe.width:
+                    pipe.passed = True
+                    score += 1
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -152,9 +209,12 @@ def main():
                     manual_bird.jump()
             manual_bird.update()
             manual_bird.draw(config.screen)
+            display_score(score)
 
             if  manual_bird.hit_pipe() or manual_bird.hit_ground():
                 print("Game Over")
+                if score > config.HIGH_SCORE:
+                    config.save_score(score)
                 return
             
 

@@ -110,9 +110,9 @@ class ManualBird(Bird):
 
         self.vel = 0
         self.gravity = 0.2
-        self.jump_strength = -7
-
-        self.rect = pygame.Rect(self.x, self.y, width, height)
+        self.jump_strength = -5
+        
+        self.rect = pygame.Rect(self.x, self.y, width - 10, height - 20)
     
     def update(self):
         self.float_offset = 0

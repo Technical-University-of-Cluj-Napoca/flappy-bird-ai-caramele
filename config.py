@@ -22,3 +22,16 @@ GROUND_Y = SCREEN_HEIGHT - GROUND_HEIGHT
 GROUND_SPEED = 1
 
 TITLE_FONT = pygame.font.SysFont("Arial", 64, bold=True)
+
+def load_score():
+    try:
+        with open("score.txt", "r") as f:
+            return int(f.read())
+    except:
+        return 0
+
+def save_score(score):
+    with open("score.txt", "w") as f:
+        f.write(str(score))
+
+HIGH_SCORE = load_score()
