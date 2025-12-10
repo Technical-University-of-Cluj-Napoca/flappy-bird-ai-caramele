@@ -4,6 +4,8 @@ import components
 import population
 import button
 import player
+from datetime import datetime
+
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -48,8 +50,11 @@ def title_screen():
         title_rect = title.get_rect(center=(config.SCREEN_WIDTH//2, 150))
         config.screen.blit(title, title_rect)
 
+
+        year = datetime.now().year
+        s = str(year)
         copyright_font = pygame.font.SysFont("Arial", 20)
-        copyright_text = copyright_font.render("© 2025 Team Caramele", True, (255, 255, 255))
+        copyright_text = copyright_font.render("©" + s + " Team Caramele", True, (255, 255, 255))
         copyright_rect = copyright_text.get_rect(center=(config.SCREEN_WIDTH//2, 600))
         config.screen.blit(copyright_text, copyright_rect)
 
