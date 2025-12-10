@@ -142,9 +142,34 @@ def highscore_window():
         config.screen.blit(instr_text, instr_rect)
 
         pygame.display.flip()
-                
 
 
+def gameover_screen(score):
+
+    play_again = button.Button(150, 430, 250, 60, "Play again")
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if play_again.handle_event(event):
+                return True
+            
+        config.screen.blit(config.BACKROUND_IMG, (0,0))
+        config.screen.blit(config.GROUND_IMG, (0, config.GROUND_Y))
+       
+        
+        play_again.draw(config.screen)
+
+        title = config.TITLE_FONT.render("Game over", True, (255,255,255))
+        title_rect = title.get_rect(center=(config.SCREEN_WIDTH//2, 150))
+        config.screen.blit(title, title_rect)
+        display_score(score)
+
+        pygame.display.flip()
+        clock.tick(60)
+
+    
 
 
 def quit_game():
@@ -168,11 +193,11 @@ def main():
             continue
         else:
             break
-    
+    running = True
     tutorial_screen(mode)
     config.pipes.clear()
     manual_bird = player.ManualBird(100,100)
-    while True:
+    while running:
 
 
 
@@ -212,10 +237,25 @@ def main():
             display_score(score)
 
             if  manual_bird.hit_pipe() or manual_bird.hit_ground():
-                print("Game Over")
+                
+                
                 if score > config.HIGH_SCORE:
                     config.save_score(score)
+
+                play_again = gameover_screen(score)
+
+                if play_again:
+                    score = 0
+                    pipes_spawn_time = 10
+                    ground_x = 0
+                    manual_bird = player.ManualBird(100, config.SCREEN_HEIGHT // 2)
+                    config.pipes.clear()
+                    continue
+                else: 
+                    running = False
                 return
+                pygame.display.flip()
+                clock.tick(60)
             
 
         if mode == "auto":
