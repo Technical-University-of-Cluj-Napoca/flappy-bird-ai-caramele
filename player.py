@@ -11,6 +11,8 @@ class Player:
         self.velocity = 0
         self.flap = False
         self.alive = True
+        self.lifespan = 0
+        self.fitness = 0
 
         #AI
         self.decision = None
@@ -39,6 +41,7 @@ class Player:
             self.rect.y += self.velocity
             if self.velocity > 5:
                 self.velocity = 5
+            self.lifespan += 1
         else:
             self.alive = False
             self.velocity = 0
@@ -79,6 +82,16 @@ class Player:
             if not p.passed:
                 return p
 
+    def calculate_fitness(self):
+        self.fitness = self.lifespan
+
+    def clone(self):
+        clone = Player()
+        clone.fitness = self.fitness
+        clone.brain = self.brain.clone()
+        clone.brain.generate_network()
+        return clone
+    
 class Bird:
     def __init__(self, x, y, width=50, height = 50):
         self.x = x

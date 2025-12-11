@@ -9,7 +9,7 @@ from datetime import datetime
 
 pygame.init()
 clock = pygame.time.Clock()
-population = population.Population(100)
+population = population.Population(50)
 
 def scroll_ground(screen, img, y, speed, pos):
     pos -= speed
@@ -272,7 +272,7 @@ def main():
             #config.screen.blit(config.GROUND_IMG, (0, config.GROUND_Y))
             if pipes_spawn_time <= 0:
                 generate_pipes()
-                pipes_spawn_time = 200
+                pipes_spawn_time = 100
             pipes_spawn_time -= 1
 
             for pipe in config.pipes:
@@ -284,7 +284,8 @@ def main():
             if not population.extinct():
                 population.update_live_players()
             else:
-                pass
+                config.pipes.clear()
+                population.natural_selection()
 
         clock.tick(60)
         pygame.display.flip()
