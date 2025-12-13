@@ -223,6 +223,8 @@ def main():
 
             for pipe in config.pipes:
                 pipe.draw(config.screen)
+                if score >= 5:
+                    pipe.move_gap = True
                 pipe.update()
                 if pipe.off_screen:
                     config.pipes.remove(pipe)
@@ -281,6 +283,8 @@ def main():
 
             for pipe in config.pipes:
                 pipe.draw(config.screen)
+                if auto_score >= 5:
+                    pipe.move_gap = True
                 pipe.update()
                 if pipe.off_screen:
                     config.pipes.remove(pipe)

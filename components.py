@@ -27,6 +27,13 @@ class Pipes:
         self.off_screen = False
         self.counted = False
 
+        self.move_gap = False
+        self.gap_dir = random.choice([-1, 1])
+        self.gap_speed = 0.6
+        self.gap_range = 60
+        self.gap_shift = 0
+        self._base_bottom_height = self.bottom_height
+
         self.bottom_pipe_img = pygame.transform.scale(Pipes.pipe_img, (self.width, self.bottom_height))
         self.top_pipe_img = pygame.transform.scale(Pipes.pipe_img, (self.width, self.top_height))
         self.top_pipe_img = pygame.transform.flip(self.top_pipe_img, False,True)
@@ -39,8 +46,33 @@ class Pipes:
 
     def update(self):
         self.x -= 3
+        self.update_moving_gap()
         if self.x + Pipes.width <= 30:
             self.passed = True
         if self.x <= -self.width:
             self.off_screen = True
+
+    def update_moving_gap(self):
+        if not self.move_gap:
+            return
+
+        self.gap_shift += self.gap_dir * self.gap_speed
+        if abs(self.gap_shift) > self.gap_range:
+            self.gap_dir *= -1
+
+        new_bottom = int(self._base_bottom_height + self.gap_shift)
+
+        min_h = 10
+        max_bottom = Ground.ground_level - self.opening - min_h
+        if new_bottom < min_h:
+            new_bottom = min_h
+        elif new_bottom > max_bottom:
+            new_bottom = max_bottom
+
+        self.bottom_height = new_bottom
+        self.top_height = Ground.ground_level - self.bottom_height - self.opening
+
+        self.bottom_pipe_img = pygame.transform.scale(Pipes.pipe_img, (self.width, self.bottom_height))
+        self.top_pipe_img = pygame.transform.scale(Pipes.pipe_img, (self.width, self.top_height))
+        self.top_pipe_img = pygame.transform.flip(self.top_pipe_img, False, True)
 
