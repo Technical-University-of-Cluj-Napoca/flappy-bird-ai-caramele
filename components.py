@@ -25,6 +25,7 @@ class Pipes:
         self.bottom_rect = self.top_rect = pygame.Rect(0, 0, 0, 0), pygame.Rect(0, 0, 0, 0)
         self.passed = False
         self.off_screen = False
+        self.counted = False
 
         self.bottom_pipe_img = pygame.transform.scale(Pipes.pipe_img, (self.width, self.bottom_height))
         self.top_pipe_img = pygame.transform.scale(Pipes.pipe_img, (self.width, self.top_height))

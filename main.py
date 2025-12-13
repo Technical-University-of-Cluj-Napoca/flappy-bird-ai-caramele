@@ -10,6 +10,7 @@ from datetime import datetime
 pygame.init()
 clock = pygame.time.Clock()
 population = population.Population(50)
+auto_score = 0
 
 def scroll_ground(screen, img, y, speed, pos):
     pos -= speed
@@ -178,11 +179,14 @@ def quit_game():
             pygame.quit()
             exit()
 def generate_pipes():
-    config.pipes.append(components.Pipes(config.SCREEN_WIDTH))
+    pipe = components.Pipes(config.SCREEN_WIDTH)
+    pipe.counted = False
+    config.pipes.append(pipe)
 
 
 
 def main():
+    global auto_score
     score = 0
     pipes_spawn_time = 10
     ground_x = 0
@@ -281,11 +285,18 @@ def main():
                 if pipe.off_screen:
                     config.pipes.remove(pipe)
 
+                if not pipe.counted and pipe.x+pipe.width <= 50:
+                    pipe.counted = True
+                    auto_score += 1
+
             if not population.extinct():
                 population.update_live_players()
             else:
                 config.pipes.clear()
                 population.natural_selection()
+                auto_score = 0
+
+            display_score(auto_score)
 
         clock.tick(60)
         pygame.display.flip()
