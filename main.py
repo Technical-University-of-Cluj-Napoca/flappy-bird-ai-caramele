@@ -214,7 +214,7 @@ def main():
 
             if pipes_spawn_time <= 0:
                 generate_pipes()
-                pipes_spawn_time = 200
+                pipes_spawn_time = 100
             pipes_spawn_time -= 1
 
             for pipe in config.pipes:

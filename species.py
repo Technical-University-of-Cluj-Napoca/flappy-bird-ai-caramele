@@ -10,6 +10,7 @@ class Species:
         self.benchmark_fitness = player.fitness
         self.benchmark_brain = player.brain.clone()
         self.champion = player.clone()
+        self.staleness = 0
 
     def similarity(self, brain):
         similarity = self.weight_difference(self.benchmark_brain, brain)
@@ -18,11 +19,10 @@ class Species:
     @staticmethod
     def weight_difference(brain1, brain2):
         total_weight_diff = 0
-        for i in range(0, len(brain1.connections)):
-            for j in range(0, len(brain2.connections)):
-                if i==j:
-                    total_weight_diff += abs(brain1.connections[i].weight
-                                             - brain2.connections[j].weight)
+        for i in range(min(len(brain1.connections), len(brain2.connections))):
+            total_weight_diff += abs(
+                brain1.connections[i].weight - brain2.connections[i].weight
+            )
         return total_weight_diff
 
     def add_to_species(self, player):
@@ -31,8 +31,12 @@ class Species:
     def sort_players_by_fitness(self):
         self.players.sort(key=operator.attrgetter('fitness'), reverse=True)
         if self.players[0].fitness > self.benchmark_fitness:
+            self.staleness = 0
             self.benchmark_fitness = self.players[0].fitness
             self.champion = self.players[0].clone()
+            self.benchmark_brain = self.players[0].brain.clone()
+        else:
+            self.staleness += 1
 
     def calculate_average_fitness(self):
         total_fitness = 0
