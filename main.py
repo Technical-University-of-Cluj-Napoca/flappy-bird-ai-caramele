@@ -109,6 +109,13 @@ def display_score(score):
     score_rect = score_txt.get_rect(center=(config.SCREEN_WIDTH // 2, 50))
     config.screen.blit(score_txt, score_rect)
 
+def display_generation():
+    font =pygame.font.Font("assets/fonts/LuckiestGuy-Regular.ttf", 30)
+    generation_txt = font.render("Generation: " + str(population.generation), True, (255, 255, 255))
+    generation_rect = generation_txt.get_rect(bottomleft=(20, config.SCREEN_HEIGHT - 20))
+    config.screen.blit(generation_txt, generation_rect)
+
+
 #display the highschore window
 def highscore_window():
     highscore = config.HIGH_SCORE
@@ -300,6 +307,7 @@ def main():
                 auto_score = 0
 
             display_score(auto_score)
+            display_generation()
 
         clock.tick(60)
         pygame.display.flip()
