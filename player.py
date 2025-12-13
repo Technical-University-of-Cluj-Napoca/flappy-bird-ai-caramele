@@ -48,11 +48,15 @@ class Player:
                 self.velocity = 5
             self.lifespan += 1
         else:
+            hit_sound = pygame.mixer.Sound('assets/sounds/hit.mp3')
+            hit_sound.play()
             self.alive = False
             self.velocity = 0
             self.flap = False
     def bird_flap(self):
         if not self.flap and not self.sky_collide():
+            flap_sound = pygame.mixer.Sound('assets/sounds/flap.mp3')
+            flap_sound.play()
             self.flap = True
             self.velocity -= 5
         if self.velocity >= 0:

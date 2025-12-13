@@ -11,6 +11,8 @@ clock = pygame.time.Clock()
 population = population.Population(50)
 auto_score = 0
 
+pygame.mixer.init()
+
 def scroll_ground(screen, img, y, speed, pos):
     pos -= speed
     if pos <= -img.get_width():
@@ -196,6 +198,8 @@ def main():
     score = 0
     pipes_spawn_time = 10
     ground_x = 0
+    hit_sound = pygame.mixer.Sound('assets/sounds/hit.mp3')
+    flap_sound = pygame.mixer.Sound('assets/sounds/flap.mp3')
     while True:
         mode = title_screen()
         if mode == "score":
@@ -243,12 +247,16 @@ def main():
                     pygame.quit()
                     exit()
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    flap_sound.play()
                     manual_bird.jump()
             manual_bird.update()
             manual_bird.draw(config.screen)
             display_score(score)
 
             if  manual_bird.hit_pipe() or manual_bird.hit_ground():
+                hit_sound.play()
+
+                pygame.time.delay(500)
 
 
                 if score > config.HIGH_SCORE:
