@@ -7,7 +7,11 @@ class Player:
     def __init__(self):
         self.x , self.y = 50, 200
         self.color = random.randint(100, 255), random.randint(100, 255), random.randint(100, 255)
-        self.rect = pygame.Rect(self.x, self.y, 20, 20)
+        self.rect = pygame.Rect(self.x, self.y, 50, 50)
+
+        self.img = pygame.image.load("assets/bird.png").convert_alpha()
+        self.img = pygame.transform.scale(self.img, (50, 50))
+
         self.velocity = 0
         self.flap = False
         self.alive = True
@@ -24,7 +28,8 @@ class Player:
 
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
+        #pygame.draw.rect(screen, self.color, self.rect)
+        screen.blit(self.img, self.rect)
 
     def ground_collide(self, ground):
         return pygame.Rect.colliderect(self.rect, ground)
