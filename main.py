@@ -40,7 +40,7 @@ def title_screen():
             if score_btn.handle_event(event):
                 return "score"
 
-        config.screen.blit(config.BACKROUND_IMG, (0,0))
+        config.screen.blit(config.BACKGROUND_IMG, (0, 0))
         config.screen.blit(config.GROUND_IMG, (0, config.GROUND_Y))
 
 
@@ -83,7 +83,7 @@ def tutorial_screen(mode):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 return
 
-        config.screen.blit(config.BACKROUND_IMG, (0,0))
+        config.screen.blit(config.BACKGROUND_IMG, (0, 0))
         ground_x = scroll_ground(config.screen,
                                         config.GROUND_IMG,
                                         config.GROUND_Y,
@@ -189,7 +189,7 @@ def gameover_screen(score):
             if play_again.handle_event(event):
                 return True
 
-        config.screen.blit(config.BACKROUND_IMG, (0,0))
+        config.screen.blit(config.BACKGROUND_IMG, (0, 0))
         config.screen.blit(config.GROUND_IMG, (0, config.GROUND_Y))
 
 
@@ -236,13 +236,16 @@ def main():
     tutorial_screen(mode)
     config.pipes.clear()
     manual_bird = player.ManualBird(100,100)
+    time = 0
     while running:
 
-
+        time += 1
 
         if mode == "manual":
-
-            config.screen.blit(config.BACKROUND_IMG, (0,0))
+            if (time // 300) % 2 == 0:
+                config.screen.blit(config.BACKGROUND_IMG, (0, 0))
+            else:
+                config.screen.blit(config.BACKGROUND_IMG_NIGHT, (0, 0))
 
             ground_x = scroll_ground(config.screen,
                                     config.GROUND_IMG,
@@ -305,7 +308,10 @@ def main():
 
         if mode == "auto":
             quit_game()
-            config.screen.blit(config.BACKROUND_IMG, (0,0))
+            if (time // 300) % 2 == 0:
+                config.screen.blit(config.BACKGROUND_IMG, (0, 0))
+            else:
+                config.screen.blit(config.BACKGROUND_IMG_NIGHT, (0, 0))
 
 
             ground_x = scroll_ground(config.screen,

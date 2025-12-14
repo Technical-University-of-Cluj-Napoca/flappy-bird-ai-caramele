@@ -11,8 +11,11 @@ pygame.display.set_caption("Flappy Bird")
 
 pipes = []
 
-BACKROUND_IMG = pygame.image.load("assets/sky.png").convert()
-BACKROUND_IMG = pygame.transform.scale(BACKROUND_IMG, (SCREEN_WIDTH, SCREEN_HEIGHT))
+BACKGROUND_IMG = pygame.image.load("assets/sky.png").convert()
+BACKGROUND_IMG = pygame.transform.scale(BACKGROUND_IMG, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+BACKGROUND_IMG_NIGHT = pygame.image.load("assets/night_sky.png").convert()
+BACKGROUND_IMG_NIGHT = pygame.transform.scale(BACKGROUND_IMG_NIGHT, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 GROUND_IMG = pygame.image.load("assets/ground.png").convert_alpha()
 scale_factor = SCREEN_WIDTH / GROUND_IMG.get_width()
