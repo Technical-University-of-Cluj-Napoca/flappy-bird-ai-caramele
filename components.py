@@ -14,15 +14,17 @@ class Ground:
 
 class Pipes:
     width = 100
-    opening = 150#bigger gap in the pipes
+    #opening = 150#bigger gap in the pipes
 
     pipe_img = pygame.image.load("assets/pipe.png")
 
     def __init__(self, screen_width):
         self.x = screen_width
         self.bottom_height = random.randint(10, 300)
+        self.opening = 200
         self.top_height = Ground.ground_level - self.bottom_height - self.opening
-        self.bottom_rect = self.top_rect = pygame.Rect(0, 0, 0, 0), pygame.Rect(0, 0, 0, 0)
+        self.top_rect = pygame.Rect(0, 0, 0, 0)
+        self.bottom_rect = pygame.Rect(0, 0, 0, 0)
         self.passed = False
         self.off_screen = False
         self.counted = False
@@ -47,6 +49,7 @@ class Pipes:
     def update(self):
         self.x -= 3
         self.update_moving_gap()
+        self.rebuild()
         if self.x + Pipes.width <= 30:
             self.passed = True
         if self.x <= -self.width:
@@ -76,3 +79,9 @@ class Pipes:
         self.top_pipe_img = pygame.transform.scale(Pipes.pipe_img, (self.width, self.top_height))
         self.top_pipe_img = pygame.transform.flip(self.top_pipe_img, False, True)
 
+    def rebuild(self):
+        self.top_height = Ground.ground_level - self.bottom_height - self.opening
+
+        self.bottom_pipe_img = pygame.transform.scale(Pipes.pipe_img, (self.width, self.bottom_height))
+        self.top_pipe_img = pygame.transform.scale(Pipes.pipe_img, (self.width, self.top_height))
+        self.top_pipe_img = pygame.transform.flip(self.top_pipe_img, False, True)

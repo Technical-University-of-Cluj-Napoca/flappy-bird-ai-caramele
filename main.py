@@ -257,10 +257,21 @@ def main():
             pipes_spawn_time -= 1
 
             for pipe in config.pipes:
-                pipe.draw(config.screen)
-                if score >= 5:
-                    pipe.move_gap = True
+                if pipe.x + pipe.width >= manual_bird.x:
+
+                    if score >= 9:
+                        pipe.opening = 120
+                    elif score >= 6:
+                        pipe.opening = 150
+                    elif score >= 3:
+                        pipe.opening = 180
+
+                    if score >= 8:
+                        pipe.move_gap = True
+
                 pipe.update()
+                pipe.draw(config.screen)
+
                 if pipe.off_screen:
                     config.pipes.remove(pipe)
 
@@ -321,15 +332,26 @@ def main():
                 pipes_spawn_time = 100
             pipes_spawn_time -= 1
 
+            BIRD_X = 50
             for pipe in config.pipes:
-                pipe.draw(config.screen)
-                if auto_score >= 5:
-                    pipe.move_gap = True
+                if pipe.x + pipe.width >= BIRD_X:
+
+                    if auto_score >= 9:
+                        pipe.opening = 120
+                    elif auto_score >= 6:
+                        pipe.opening = 150
+                    elif auto_score >= 3:
+                        pipe.opening = 180
+
+                    if auto_score >= 8:
+                        pipe.move_gap = True
+
                 pipe.update()
+                pipe.draw(config.screen)
                 if pipe.off_screen:
                     config.pipes.remove(pipe)
 
-                if not pipe.counted and pipe.x+pipe.width <= 50:
+                if not pipe.counted and pipe.x+pipe.width <= BIRD_X:
                     pipe.counted = True
                     auto_score += 1
 
