@@ -126,6 +126,13 @@ def highscore_window():
     display = True#flag to check if to display window
     font_title = pygame.font.Font("assets/fonts/LuckiestGuy-Regular.ttf", 30)
     font_score = pygame.font.Font("assets/fonts/LuckiestGuy-Regular.ttf", 30)
+
+    game_background = config.screen.copy()
+    popup_width, popup_height = 400, 500
+    popup_x = (config.SCREEN_WIDTH - popup_width) // 2
+    popup_y = (config.SCREEN_HEIGHT - popup_height) // 2
+    popup_rect = pygame.Rect(popup_x, popup_y, popup_width, popup_height)
+
     while display:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -134,29 +141,38 @@ def highscore_window():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 display = False
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if not popup_rect.collidepoint(event.pos):
+                    display = False
+
+        config.screen.blit(game_background, (0, 0))
+
         overlay = pygame.Surface((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
-        overlay.set_alpha(180)
+        overlay.set_alpha(150)
         overlay.fill((0,0,0))
         config.screen.blit(overlay, (0,0))
 
-        title_text = font_title.render("HIGH SCORE MANUAL MODE", True, (255, 255, 255))
-        title_rect = title_text.get_rect(center=(config.SCREEN_WIDTH // 2, 200))
+        pygame.draw.rect(config.screen, (50, 50, 70), popup_rect, border_radius=20)
+        pygame.draw.rect(config.screen, (255, 255, 255), popup_rect, width=3, border_radius=20)
+
+        title_text = font_title.render("HIGH SCORE MANUAL", True, (255, 215, 0))  # Gold color
+        title_rect = title_text.get_rect(center=(popup_rect.centerx, popup_rect.top + 60))
         config.screen.blit(title_text, title_rect)
 
         score_text = font_score.render(str(highscore), True, (255, 255, 255))
-        score_rect = score_text.get_rect(center=(config.SCREEN_WIDTH // 2, 300))
+        score_rect = score_text.get_rect(center=(popup_rect.centerx, popup_rect.top + 110))
         config.screen.blit(score_text, score_rect)
 
-        title_text_auto = font_title.render("HIGH SCORE AUTONOMOUS MODE", True, (255, 255, 255))
-        title_rect_auto = title_text_auto.get_rect(center=(config.SCREEN_WIDTH // 2, 400))
+        title_text_auto = font_title.render("HIGH SCORE AUTO", True, (255, 215, 0))
+        title_rect_auto = title_text_auto.get_rect(center=(popup_rect.centerx, popup_rect.top + 200))
         config.screen.blit(title_text_auto, title_rect_auto)
 
         score_text_auto = font_score.render(str(highest_score_auto), True, (255, 255, 255))
-        score_rect_auto = score_text_auto.get_rect(center=(config.SCREEN_WIDTH // 2, 500))
+        score_rect_auto = score_text_auto.get_rect(center=(popup_rect.centerx, popup_rect.top + 250))
         config.screen.blit(score_text_auto, score_rect_auto)
 
-        instr_text = font_score.render("Press SPACE to continue", True, (200, 200, 200))
-        instr_rect = instr_text.get_rect(center=(config.SCREEN_WIDTH // 2, 600))
+        instr_text = font_score.render("Press SPACE to Close", True, (200, 200, 200))
+        instr_rect = instr_text.get_rect(center=(popup_rect.centerx, popup_rect.bottom - 40))
         config.screen.blit(instr_text, instr_rect)
 
         pygame.display.flip()
