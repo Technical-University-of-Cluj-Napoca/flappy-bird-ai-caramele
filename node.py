@@ -1,0 +1,24 @@
+import math
+
+class Node:
+    def __init__(self, id):
+        self.id = id
+        #0, 1, 2 -- bird vision
+        #3 bias node
+        self.layer = 0
+        self.input_value = 0
+        self.output_value = 0
+        self.connections = []
+    def activate(self):
+        def sigmoid(x):
+            return 1/(1+math.exp(-x))
+        if self.layer == 1: #output
+            self.output_value = sigmoid(self.input_value)
+        for i in range(len(self.connections)):
+            self.connections[i].to_node.input_value += self.connections[i].weight * self.output_value
+
+    def clone(self):
+        clone = Node(self.id)
+        clone.id = self.id
+        clone.layer = self.layer
+        return clone
