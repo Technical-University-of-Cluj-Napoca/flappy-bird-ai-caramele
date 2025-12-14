@@ -121,9 +121,10 @@ def display_generation():
 #display the highschore window
 def highscore_window():
     highscore = config.HIGH_SCORE
+    highest_score_auto = config.HIGH_SCORE_AUTO
 
     display = True#flag to check if to display window
-    font_title = pygame.font.Font("assets/fonts/LuckiestGuy-Regular.ttf", 50)
+    font_title = pygame.font.Font("assets/fonts/LuckiestGuy-Regular.ttf", 30)
     font_score = pygame.font.Font("assets/fonts/LuckiestGuy-Regular.ttf", 30)
     while display:
         for event in pygame.event.get():
@@ -138,7 +139,7 @@ def highscore_window():
         overlay.fill((0,0,0))
         config.screen.blit(overlay, (0,0))
 
-        title_text = font_title.render("HIGH SCORE", True, (255, 255, 255))
+        title_text = font_title.render("HIGH SCORE MANUAL MODE", True, (255, 255, 255))
         title_rect = title_text.get_rect(center=(config.SCREEN_WIDTH // 2, 200))
         config.screen.blit(title_text, title_rect)
 
@@ -146,8 +147,16 @@ def highscore_window():
         score_rect = score_text.get_rect(center=(config.SCREEN_WIDTH // 2, 300))
         config.screen.blit(score_text, score_rect)
 
+        title_text_auto = font_title.render("HIGH SCORE AUTONOMOUS MODE", True, (255, 255, 255))
+        title_rect_auto = title_text_auto.get_rect(center=(config.SCREEN_WIDTH // 2, 400))
+        config.screen.blit(title_text_auto, title_rect_auto)
+
+        score_text_auto = font_score.render(str(highest_score_auto), True, (255, 255, 255))
+        score_rect_auto = score_text_auto.get_rect(center=(config.SCREEN_WIDTH // 2, 500))
+        config.screen.blit(score_text_auto, score_rect_auto)
+
         instr_text = font_score.render("Press SPACE to continue", True, (200, 200, 200))
-        instr_rect = instr_text.get_rect(center=(config.SCREEN_WIDTH // 2, 400))
+        instr_rect = instr_text.get_rect(center=(config.SCREEN_WIDTH // 2, 600))
         config.screen.blit(instr_text, instr_rect)
 
         pygame.display.flip()
@@ -260,7 +269,7 @@ def main():
 
 
                 if score > config.HIGH_SCORE:
-                    config.save_score(score)
+                    config.save_score(score, "score.txt")
 
                 play_again = gameover_screen(score)
 
@@ -281,6 +290,7 @@ def main():
         if mode == "auto":
             quit_game()
             config.screen.blit(config.BACKROUND_IMG, (0,0))
+
 
             ground_x = scroll_ground(config.screen,
                                     config.GROUND_IMG,
@@ -312,6 +322,8 @@ def main():
             else:
                 config.pipes.clear()
                 population.natural_selection()
+                if auto_score > config.HIGH_SCORE_AUTO:
+                    config.save_score(auto_score, "score_auto.txt")
                 auto_score = 0
 
             display_score(auto_score)

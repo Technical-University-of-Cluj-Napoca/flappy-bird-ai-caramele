@@ -23,15 +23,16 @@ GROUND_SPEED = 1
 
 # TITLE_FONT = pygame.font.SysFont("Arial", 64, bold=True)
 TITLE_FONT = pygame.font.Font("assets/fonts/LuckiestGuy-Regular.ttf", 64)
-def load_score():
+def load_score(file):
     try:
-        with open("score.txt", "r") as f:
+        with open(file, "r") as f:
             return int(f.read())
     except:
         return 0
 
-def save_score(score):
-    with open("score.txt", "w") as f:
+def save_score(score, file):
+    with open(file, "w") as f:
         f.write(str(score))
 
-HIGH_SCORE = load_score()
+HIGH_SCORE = load_score("score.txt")
+HIGH_SCORE_AUTO = load_score("score_auto.txt")
