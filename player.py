@@ -7,10 +7,16 @@ class Player:
     def __init__(self):
         self.x , self.y = 50, 200
         self.color = random.randint(100, 255), random.randint(100, 255), random.randint(100, 255)
-        self.rect = pygame.Rect(self.x, self.y, 20, 20)
+        self.rect = pygame.Rect(self.x, self.y, 50, 50)
+
+        self.img = pygame.image.load("assets/bird.png").convert_alpha()
+        self.img = pygame.transform.scale(self.img, (50, 50))
+
         self.velocity = 0
         self.flap = False
         self.alive = True
+        self.lifespan = 0
+        self.fitness = 0
 
         #AI
         self.decision = None
@@ -22,7 +28,8 @@ class Player:
 
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
+        #pygame.draw.rect(screen, self.color, self.rect)
+        screen.blit(self.img, self.rect)
 
     def ground_collide(self, ground):
         return pygame.Rect.colliderect(self.rect, ground)
@@ -39,12 +46,17 @@ class Player:
             self.rect.y += self.velocity
             if self.velocity > 5:
                 self.velocity = 5
+            self.lifespan += 1
         else:
+            hit_sound = pygame.mixer.Sound('assets/sounds/hit.mp3')
+            hit_sound.play()
             self.alive = False
             self.velocity = 0
             self.flap = False
     def bird_flap(self):
         if not self.flap and not self.sky_collide():
+            flap_sound = pygame.mixer.Sound('assets/sounds/flap.mp3')
+            flap_sound.play()
             self.flap = True
             self.velocity -= 5
         if self.velocity >= 0:
@@ -79,6 +91,16 @@ class Player:
             if not p.passed:
                 return p
 
+    def calculate_fitness(self):
+        self.fitness = self.lifespan
+
+    def clone(self):
+        clone = Player()
+        clone.fitness = self.fitness
+        clone.brain = self.brain.clone()
+        clone.brain.generate_network()
+        return clone
+    
 class Bird:
     def __init__(self, x, y, width=50, height = 50):
         self.x = x

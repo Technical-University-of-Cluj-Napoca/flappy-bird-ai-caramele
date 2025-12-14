@@ -21,8 +21,8 @@ GROUND_IMG = pygame.transform.scale(GROUND_IMG, (SCREEN_WIDTH, GROUND_HEIGHT))
 GROUND_Y = SCREEN_HEIGHT - GROUND_HEIGHT
 GROUND_SPEED = 1
 
-TITLE_FONT = pygame.font.SysFont("Arial", 64, bold=True)
-
+# TITLE_FONT = pygame.font.SysFont("Arial", 64, bold=True)
+TITLE_FONT = pygame.font.Font("assets/fonts/LuckiestGuy-Regular.ttf", 64)
 def load_score():
     try:
         with open("score.txt", "r") as f:

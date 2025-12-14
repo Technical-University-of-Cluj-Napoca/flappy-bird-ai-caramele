@@ -13,7 +13,7 @@ class Button:
         self.hover_color = hover_color
         self.text_color = text_color
         self.is_hovered = False
-        self.font = pygame.font.Font(None, 32)
+        self.font = pygame.font.Font("assets/fonts/LuckiestGuy-Regular.ttf", 22)
 
     def draw(self, screen):
 
@@ -23,10 +23,10 @@ class Button:
 
         # draw the button rectangle
         current_color = self.hover_color if self.is_hovered else self.color
-        pygame.draw.rect(screen, current_color, self.rect)
+        pygame.draw.rect(screen, current_color, self.rect, border_radius=20)
 
         # add a simple border
-        pygame.draw.rect(screen, (30, 30, 30), self.rect, 2)
+        pygame.draw.rect(screen, (30, 30, 30), self.rect, 2, border_radius=20)
 
         # draw the text
         text_surf = self.font.render(self.text, True, self.text_color)
